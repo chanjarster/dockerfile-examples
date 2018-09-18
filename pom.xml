@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>me.chanjar.dockerfile-examples</groupId>
+  <artifactId>examples-1</artifactId>
+  <version>1.0-SNAPSHOT</version>
+
+  <parent>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-parent</artifactId>
+    <version>2.0.3.RELEASE</version>
+  </parent>
+
+  <dependencies>
+
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-web</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>org.apache.commons</groupId>
+      <artifactId>commons-lang3</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>org.apache.commons</groupId>
+      <artifactId>commons-text</artifactId>
+      <version>1.4</version>
+    </dependency>
+
+  </dependencies>
+
+  <properties>
+    <java.version>1.8</java.version>
+  </properties>
+
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-maven-plugin</artifactId>
+      </plugin>
+
+      <plugin>
+        <groupId>com.spotify</groupId>
+        <artifactId>dockerfile-maven-plugin</artifactId>
+        <version>1.4.3</version>
+        <configuration>
+          <repository>dockerfile-examples-${project.artifactId}</repository>
+          <tag>${project.version}</tag>
+          <useMavenSettingsForAuth>true</useMavenSettingsForAuth>
+          <buildArgs>
+            <JAR_FILE>${project.build.finalName}.${project.packaging}</JAR_FILE>
+            <VERSION>${project.version}</VERSION>
+            <NAME>${project.artifactId}</NAME>
+          </buildArgs>
+        </configuration>
+      </plugin>
+
+
+    </plugins>
+  </build>
+
+  <repositories>
+    <repository>
+      <id>spring-releases</id>
+      <url>https://repo.spring.io/libs-release</url>
+    </repository>
+  </repositories>
+  <pluginRepositories>
+    <pluginRepository>
+      <id>spring-releases</id>
+      <url>https://repo.spring.io/libs-release</url>
+    </pluginRepository>
+  </pluginRepositories>
+</project>
