@@ -1,6 +1,6 @@
 # Java程序制作Docker Image的例子
 
-本例子是一个spring-boot应用，不过实际上本例子是用户所有Java应用。
+本例子是一个spring-boot应用，不过本例子适用于所有Java应用。
 
 ## 目录结构
 
