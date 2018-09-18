@@ -2,6 +2,27 @@
 
 本例子是一个spring-boot应用，不过实际上本例子是用户所有Java应用。
 
+## 目录结构
+
+所有与程序相关的东西都存放在`/home/java-app/`下：
+
+```
+/home/java-app
+   ├── docker-entrypoint.sh
+   ├── lib
+   │   └── java-app.jar
+   ├── etc
+   ├── logs
+   └── tmp
+```
+
+* `docker-entrypoint.sh`，启动脚本
+* `lib`，存放JAR包
+* `lib/java-app.jar`，程序JAR包
+* `etc`，存放配置文件
+* `logs`，存放日志文件存放地点
+* `tmp`，存放临时文件目录
+ 
 ## 构建Image
 
 ```bash
@@ -10,7 +31,7 @@ mvn clean package dockerfile:build
 
 ## 运行
 
-普通启动，然后访问`http://localhost:8080``：
+普通启动，然后访问`http://localhost:8080`：
 
 ```bash
 docker run -p 8080:8080 dockerfile-examples-examples-1:1.0-SNAPSHOT
