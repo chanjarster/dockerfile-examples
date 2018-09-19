@@ -29,11 +29,11 @@ Java的基础镜像应该在[openjdk repository](https://hub.docker.com/_/openjd
 
 openjdk repository提供了各种各样的image tags看起来眼花缭乱，但是本质上来说就这么几个：
 
-* openjdk:<version>
-* openjdk:<version>-slim
-* openjdk:<version>-alpine
+* openjdk:\<version\>
+* openjdk:\<version\>-slim
+* openjdk:\<version\>-alpine
 
-比如你可以在Dockerfile这样写：
+关于`<version>`一般来说指定大版本号就行了，比如你可以在Dockerfile这样写：
 
 ```txt
 FROM openjdk:8-alpine
