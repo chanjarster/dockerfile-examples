@@ -68,6 +68,19 @@ gosu的Dockerfile指南在[这里](https://github.com/tianon/gosu/blob/master/IN
 
 记得要根据不同的基础Image选择适合的安装方式。
 
+如果你用的是`openjdk:<version>-alpine`，那么直接用本项目提供的Dockerfile就行了。
+
+如果你用的是`openjdk:<version>-slim`或者`openjdk:<version>`，那么在Image里安装gosu的方式是这样：
+
+```txt
+RUN set -ex; \
+    apt update; \
+    apt install -y gosu; \
+    rm -rf /var/lib/apt/lists/*; \
+# verify that the binary works
+    gosu nobody true;
+```
+
 ### 指定Web程序的接口
 
 对于联网应用而言，必须在Dockerfile中指定暴露的端口，否则该端口无法映射。
