@@ -1,4 +1,4 @@
-package me.chanjar.jdbc.timezone;
+package me.chanjar.docker;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

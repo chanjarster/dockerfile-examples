@@ -1,4 +1,4 @@
-package me.chanjar.jdbc.timezone;
+package me.chanjar.docker;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.text.StringEscapeUtils;
