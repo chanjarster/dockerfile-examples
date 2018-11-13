@@ -62,23 +62,31 @@ RUN set -eux; \
 
 ### Container内的程序以非root用户启动
 
-在Docker Image内部，我们应该使用非root用户启动程序，这需要使用到[gosu](https://github.com/tianon/gosu)。
+在Docker Image内部，我们应该使用非root用户启动程序，这需要新建用户。
 
-gosu的Dockerfile指南在[这里](https://github.com/tianon/gosu/blob/master/INSTALL.md)。
-
-记得要根据不同的基础Image选择适合的安装方式。
-
-如果你用的是`openjdk:<version>-alpine`，那么直接用本项目提供的Dockerfile就行了。
-
-如果你用的是`openjdk:<version>-slim`或者`openjdk:<version>`，那么在Image里安装gosu的方式是这样：
+如果你用的是`openjdk:<version>-alpine`新建用户命令是这样的：
 
 ```txt
-RUN set -ex; \
-    apt update; \
-    apt install -y gosu; \
-    rm -rf /var/lib/apt/lists/*; \
-# verify that the binary works
-    gosu nobody true;
+RUN set -eux; \
+    addgroup --gid 1000 java-app; \
+    adduser -S -u 1000 -g java-app -h /home/java-app/ -s /bin/sh -D java-app;
+```
+
+如果你用的是`openjdk:<version>-slim`或者`openjdk:<version>`新建用户命令是这样的：
+
+```txt
+RUN set -eux; \
+    addgroup --gid 1000 java-app; \
+    adduser --system --uid 1000 --gid 1000 --home=/home/java-app/ --shell=/bin/sh --disabled-password java-app;
+```
+
+然后使用[Dockerfile USER指令][dockerfile-user]
+
+
+```txt
+USER java-app
+
+# 后面的指令就都是以java-app用户身份执行了
 ```
 
 ### 指定Web程序的接口
@@ -136,16 +144,10 @@ mvn clean package dockerfile:build
 docker run -p 8080:8080 chanjarster/dockerfile-java-examples-1:1.0-SNAPSHOT
 ```
 
-设定JVM参数，使用`JVM_OPTS`环境变量：
+设定JVM参数/System Properties，使用`JAVA_OPTS`环境变量：
 
 ```bash
-docker run -p 8080:8080 -e JVM_OPTS='-Xmx128M -Xms128M' chanjarster/dockerfile-java-examples-1:1.0-SNAPSHOT
-```
-
-设定System Properties，使用`JAVA_ARGS`环境变量：
-
-```bash
-docker run -p 8080:8080 -e JAVA_ARGS='-Dabc=xyz -Ddef=uvw' chanjarster/dockerfile-java-examples-1:1.0-SNAPSHOT
+docker run -p 8080:8080 -e JAVA_OPTS='-Xmx128M -Xms128M -Dabc=xyz -Ddef=uvw' chanjarster/dockerfile-java-examples-1:1.0-SNAPSHOT
 ```
 
 提供程序运行参数，在后面直接添加即可：
@@ -160,8 +162,8 @@ docker run -p 8080:8080 chanjarster/dockerfile-java-examples-1:1.0-SNAPSHOT --de
 * [Docker ENTRYPOINT][docker-endpoint]
 * [Postgres Dockerfile & script](https://github.com/docker-library/postgres/tree/3f585c58df93e93b730c09a13e8904b96fa20c58/11)
 * [MySQL Dockerfile & script](https://github.com/docker-library/mysql/tree/b39f1e5e4ec82dc8039cecc91dbf34f6c9ae5fb0/8.0)
-* [gosu Intall](https://github.com/tianon/gosu/blob/master/INSTALL.md)
 * [Bash set命令教程](http://www.ruanyifeng.com/blog/2017/11/bash-set.html)
 
 [docker-endpoint]: https://docs.docker.com/engine/reference/builder/#entrypoint
 [dockerfile-best-practice]: https://docs.docker.com/develop/develop-images/dockerfile_best-practices/
+[dockerfile-user]: https://docs.docker.com/engine/reference/builder/#user
