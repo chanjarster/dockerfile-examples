@@ -2,7 +2,7 @@
 
 set -ex;
 
-/usr/bin/java \
+exec /usr/bin/java \
   $JAVA_OPTS \
   -Djava.io.tmpdir="/home/java-app/tmp" \
   -jar \
